@@ -20,8 +20,10 @@ public class Animal
         this.name = name;
     }
 
+        //this is a constructor 
     public Animal(String name)
     {
         this.name = name;
     }
+
 }

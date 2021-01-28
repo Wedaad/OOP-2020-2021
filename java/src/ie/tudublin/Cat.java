@@ -2,31 +2,47 @@ package ie.tudublin;
 
 public class Cat extends Animal
 {
-    private int numLives;
     public Cat(String name)
     {
         super(name);
-        numLives = 9;
     }
+
+    private int numLives;
 
     public int getNumLives() {
+
         return numLives;
-    }
 
-    public void setNumLives(int numLives) {
-        this.numLives = numLives;
-    }
+    }//end getNumLives()
 
-    void kill()
+    public void setNumLives(int numLives)
     {
-        if (numLives > 0)
-        {
+        this.numLives = numLives;
+
+    }//ends setNumLives
+
+    //this is a constructor 
+    public void Cat(int numLives)
+    {
+        this.numLives = numLives;
+
+    }//ends getNumLives
+
+    public void kill() {
+
+        if(numLives > 0) {
+
+            numLives = numLives - 1;
             System.out.println("Ouch!");
-            numLives --;
-        }
-        else
-        {
-            System.out.println("I am dead!");
-        }
-    }
+
+        }//ends if statement 
+
+        if(numLives == 0) {
+
+            System.out.println("Dead");
+
+        }//ends if statement 
+
+
+    }//ends void kill()
 }
