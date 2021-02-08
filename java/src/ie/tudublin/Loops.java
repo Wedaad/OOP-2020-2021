@@ -104,6 +104,20 @@ public class Loops extends PApplet {
                     fill(cirgap * i, 255, 255);
                     ellipse(cw / 2 + (i * cw), cy, cw, cw);
                 }
+                break;
+            
+            case 4: 
+                int numSquares = 10;
+                float sw = width / (float) numSquares;
+                float squaregap = 255 / (float) numSquares;
+
+                for(int i = 0; i < numSquares; i++) {
+
+                    fill(squaregap * i, 255, 255);
+                    square((i * sw), cy, sw);
+                        
+                }
+                break;
         }
     }
 }
