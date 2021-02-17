@@ -15,17 +15,13 @@ public class Arrays extends PApplet {
 
     // This is a demo of the map function
     public void drawGrid() {
-        stroke(0, 255, 0);
+        stroke(255);
         float border = width * 0.1f;
-        textAlign(CENTER, CENTER);
-        for (int i = -5; i <= 5; i++) {
-            float x = map(i, -5, 5, border, width - border);
-            line(x, border, x, height - border);
-            line(border, x, width - border, x);
-            fill(255);
-            text(i, x, border * 0.5f);
-            text(i, border * 0.5f, x);
-        }
+        int i = -5;
+        float x = map(i, -5, 5, border, width - border);
+        line(x, border, x, height - border);
+        line(border, 450, width - border, 450);
+
     }
     
     // Return the sum of all the elements in an array
@@ -58,7 +54,7 @@ public class Arrays extends PApplet {
     int mode = 0;
 
     float[] rainfall = { 45, 37, 55, 27, 38, 50, 79, 48, 104, 31, 100, 58 };
-    String[] months = { "Jan", "Feb", "March", "April", "May", "June", "July", "August", "Sept", "Oct", "Nov", "Dec" };
+    String[] months = { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec" };
     float[] arr = new float[100]; // 100 float array
 
     public void keyPressed() {
@@ -69,7 +65,7 @@ public class Arrays extends PApplet {
     }
 
     public void setup() {
-        colorMode(RGB);
+        //colorMode(RGB);
 
         // Iterating over an array in Java
         for (int i = 0; i < rainfall.length; i++) {
@@ -111,21 +107,44 @@ public class Arrays extends PApplet {
         // Use the map function
 
         colorMode(HSB);
-        float w = width / (float) rainfall.length;
+        background(0);
+        stroke(255);
+        float w = (width - 100) / (float) rainfall.length;
+        float colour = 255 / (float) rainfall.length;
         for (int i = 0; i < rainfall.length; i++) {
-            noStroke();
-            fill(random(255), 255, 255);
-            float x = map(i, 0, rainfall.length, 0, width);
-            rect(x, height, w, -rainfall[i]);
+
+            fill(colour * i, 255, 255);
+            float x = map(i, 0, rainfall.length, (width * 0.1f), width - (width * 0.1f));
+            rect(x, height - 50, w, -rainfall[i]);
+        }
+        drawGrid();
+
+        for(int i = 120; i >= 0; i--) {
+
+            float x = map(i, 120, 0, (width * 0.1f), width - (width * 0.1f));
+            text(i, (width * 0.1f) * 0.3f, x + 5);
+            fill(255);
+            
+            line(45, x, 50, x);
+            stroke(255);
+            i -= 9;
+        }
+
+        for(int i = 0; i < rainfall.length; i++) {
+
+            float x = map(i, 0, 12, (width * 0.1f), width - (width * 0.1f));
+            text(months[i], x, 480);
+
         }
     }
 
 
     public void draw() {
-        background(0);
         switch (mode) {
             case 0: {
-                // Bar chart
+            // Bar chart
+                textAlign(CENTER, CENTER);
+                text("Rainfall Bar Chart", 250, 50);
                 break;
             }
             case 1: {
