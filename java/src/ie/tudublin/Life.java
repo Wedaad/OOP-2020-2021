@@ -71,7 +71,7 @@ public class Life extends PApplet {
 
     public void setCell(boolean[][] board, int row, int col, boolean b)
     {
-        if (row >= 0 && row < size -1 && col >= 0 && col < size -1)
+        if (row >= 0 && row < size && col >= 0 && col < size)
         {
             board[row][col] = b;
         }
@@ -79,7 +79,7 @@ public class Life extends PApplet {
 
     public boolean getCell(boolean[][] board, int row, int col)
     {
-        if (row >= 0 && row < size -1 && col >= 0 && col < size -1)
+        if (row >= 0 && row < size && col >= 0 && col < size)
         {
             return board[row][col];
         }
@@ -145,6 +145,19 @@ public class Life extends PApplet {
         }
     }
 
+    public void clear() {
+
+        for(int row = 0; row < size; row++) {
+
+            for(int col = 0; col < size; col++) {
+
+                setCell(board, row, col, false);
+
+            }
+        }
+
+    }
+
     public void settings()
     {
         size(500, 500);
@@ -155,6 +168,7 @@ public class Life extends PApplet {
     public void keyPressed() {
         if (keyCode == ' ')
         {
+            paused = ! paused;
         }
         
         if (keyCode == '1')
@@ -163,11 +177,25 @@ public class Life extends PApplet {
         }
         if (keyCode == '2')
         {
+            clear();
         }
         if (keyCode == '3')
         {
+            drawCross();
         }
             
+    }
+
+    public void drawCross() {
+
+        for(int i = 0; i < size; i++) {
+
+            setCell(board, size/2, i, true);
+            setCell(board, i, size / 2, true);
+
+
+        }
+ 
     }
 
     public void setup() {
@@ -186,7 +214,7 @@ public class Life extends PApplet {
         //printBoard(board);        
     }
 
-    private void updateBoard(boolean[][] board)
+    private void updateBoard()
     {
         
         // Put code here to apply the rules!!
@@ -204,6 +232,7 @@ public class Life extends PApplet {
 
                         //this cell has exactly 2 or 3 neighbours and is alive 
                         next[row][col] = true;
+                        //setCell(next, row, col, b);
                         
                     }
                     else {
@@ -221,6 +250,10 @@ public class Life extends PApplet {
 
                         next[row][col] = true;
                        
+                    }
+                    else {
+
+                        next[row][col] = false;
                     }
 
                 }
@@ -241,11 +274,18 @@ public class Life extends PApplet {
     public void mouseDragged()
     {
         // This method gets called automatically when the mouse is dragged across the screen
+        int row = (int) map(mouseY, 0, height, 0, size);
+        int col = (int) map(mouseX, 0, width, 0, size);
+        setCell(board, row, col, true);
     }
 
     public void draw() {
         background(0);
-        drawBoard(board);        
-        updateBoard(board);
+        drawBoard(board); 
+        if(!paused) {
+
+            updateBoard();  
+            
+        } 
     }
 }
