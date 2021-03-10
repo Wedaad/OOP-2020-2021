@@ -90,8 +90,9 @@ public class Audio1 extends PApplet {
                 //ellipse(200, y, 30, 30);
                 //ellipse(300, lerpedY, 30, 30);
 
-                y += random(-10, 10);
-                lerpedY = lerp(lerpedY, y, 0.1f);
+                //for the circles 
+                //y += random(-10, 10);
+                //lerpedY = lerp(lerpedY, y, 0.1f);
                 break;
             }   
             case 1: //The waveform
@@ -103,12 +104,9 @@ public class Audio1 extends PApplet {
                     stroke(c, 255, 255);
                     lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
         
-                    line(i, halfHeight, i, halfHeight + ab.get(i) * halfHeight);
-
+                    line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, i, halfHeight + lerpedBuffer[i] * halfHeight * 4);
                 }
 
-                y += random(-10, 10);
-                lerpedY = lerp(lerpedY, y, 0.1f);
                 break;
             }
             case 2:
