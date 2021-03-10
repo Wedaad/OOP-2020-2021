@@ -28,7 +28,7 @@ public class Audio1 extends PApplet {
     public void setup() {
         minim = new Minim(this);
         ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
-        ap = minim.loadFile("RedSwan.mp3", width);
+        ap = minim.loadFile("heroplanet.mp3", width);
         //ab = ai.mix; // Connect the buffer to the mic
         ab = ap.mix; // Connect the buffer to the mp3 file
         colorMode(HSB);
@@ -109,21 +109,71 @@ public class Audio1 extends PApplet {
 
                 break;
             }
-            case 2:
+            case 2: //The waveform drawn down the 4 sides of the screen
             {
+
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+        
+                    line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, i, halfHeight + lerpedBuffer[i] * halfHeight * 4); 
+                    line(i, halfHeight, i, halfHeight);
+                }
+
                 break;
             }
             case 3:
             {
+
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    noFill();
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+
+                    //ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i)); KEEP FOR ASSIGNMENT
+                }
+
+                ellipse(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
+
+
                 break;
             }
             case 4:
             {
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    noFill();
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+
+                    //ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i)); KEEP FOR ASSIGNMENT
+                }
+
+                rectMode(CENTER);
+                rect(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
+
                 break;
             }
             case 5:
             {
-                // ??
+                
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    noFill();
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+
+                    ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i));
+                }
+
                 break;
             }
         }        
