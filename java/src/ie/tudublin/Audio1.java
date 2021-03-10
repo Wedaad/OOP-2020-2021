@@ -28,7 +28,7 @@ public class Audio1 extends PApplet {
     public void setup() {
         minim = new Minim(this);
         ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
-        ap = minim.loadFile("heroplanet.mp3", width);
+        ap = minim.loadFile("RedSwan.mp3", width);
         //ab = ai.mix; // Connect the buffer to the mic
         ab = ap.mix; // Connect the buffer to the mp3 file
         colorMode(HSB);
@@ -70,7 +70,7 @@ public class Audio1 extends PApplet {
 
         switch (which)
         {
-            case 0:
+            case 0: //wavy lines visual 
             {
                 // Iterate over all the elements in the audio buffer
                 for (int i = 0; i < ab.size(); i++) {
@@ -83,18 +83,32 @@ public class Audio1 extends PApplet {
                 }
 
                 // See the difference lerping makes? It smooths out the jitteryness of average, so the visual looks smoother
-                ellipse(width / 4, 100, average * 500, average * 500);
-                ellipse(width / 2, 100, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
+                //ellipse(width / 4, 100, average * 500, average * 500);
+                //ellipse(width / 2, 100, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
         
                 // This is another example of how lerping works
-                ellipse(200, y, 30, 30);
-                ellipse(300, lerpedY, 30, 30);
+                //ellipse(200, y, 30, 30);
+                //ellipse(300, lerpedY, 30, 30);
+
                 y += random(-10, 10);
                 lerpedY = lerp(lerpedY, y, 0.1f);
                 break;
             }   
-            case 1:
+            case 1: //The waveform
             {
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+        
+                    line(i, halfHeight, i, halfHeight + ab.get(i) * halfHeight);
+
+                }
+
+                y += random(-10, 10);
+                lerpedY = lerp(lerpedY, y, 0.1f);
                 break;
             }
             case 2:
