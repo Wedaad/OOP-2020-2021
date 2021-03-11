@@ -32,12 +32,12 @@ public class Audio1 extends PApplet {
         //ab = ai.mix; // Connect the buffer to the mic
         ab = ap.mix; // Connect the buffer to the mp3 file
         colorMode(HSB);
-        lerpedBuffer = new float[width];
+        lerpedBuffer = new float[width]; //for smoothing out the movement
 
     }
 
     public void keyPressed() {
-        if (keyCode >= '0' && keyCode <= '5') {
+        if (keyCode >= '0' && keyCode <= '6') {
             which = keyCode - '0';
         }
         if (keyCode == ' ') {
@@ -56,7 +56,7 @@ public class Audio1 extends PApplet {
         background(0);
         stroke(255);
         float halfHeight = height / 2;
-        float average = 0;
+        float average = 0; //amplidtude of the samples 
         float sum = 0;
 
         // Calculate the average of the buffer
@@ -119,8 +119,11 @@ public class Audio1 extends PApplet {
                     stroke(c, 255, 255);
                     lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
         
-                    line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, i, halfHeight + lerpedBuffer[i] * halfHeight * 4); 
-                    line(i, halfHeight, i, halfHeight);
+                    line(0, i, lerpedBuffer[i] * halfHeight * 4, i);
+                    line(width, i, width - ( lerpedBuffer[i] * halfHeight * 4), i);
+                    line(i, 0, i, lerpedBuffer[i] * halfHeight * 4);
+                    line(i, height, i, height - (lerpedBuffer[i] * halfHeight * 4));
+                   
                 }
 
                 break;
@@ -132,13 +135,13 @@ public class Audio1 extends PApplet {
                 for (int i = 0; i < ab.size(); i++) {
 
                     noFill();
-                    float c = map(i, 0, ab.size(), 0, 255);
+                    float c = map(average, 0, 1, 0, 255);
                     stroke(c, 255, 255);
+                    strokeWeight(2);
 
+                    ellipse(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
                     //ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i)); KEEP FOR ASSIGNMENT
                 }
-
-                ellipse(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
 
 
                 break;
@@ -149,14 +152,13 @@ public class Audio1 extends PApplet {
                 for (int i = 0; i < ab.size(); i++) {
 
                     noFill();
-                    float c = map(i, 0, ab.size(), 0, 255);
+                    float c = map(average, 0, 1, 0, 255); //changing the colour with respect to the increasing amplitude 
                     stroke(c, 255, 255);
 
-                    //ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i)); KEEP FOR ASSIGNMENT
-                }
+                    rectMode(CENTER);
+                    rect(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
 
-                rectMode(CENTER);
-                rect(width / 2, halfHeight, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
+                }
 
                 break;
             }
@@ -172,6 +174,35 @@ public class Audio1 extends PApplet {
                     lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
 
                     ellipse(width / 2, halfHeight, 50 + (lerpedBuffer[i] * i), 50 + (lerpedBuffer[i] * i));
+                }
+
+                break;
+            }
+
+            case 6: //Drawing a Spiral
+            {
+                float r = 0.1f;
+                int numPoints = 20; //num of points of the circle 
+                float thetaInc = TWO_PI / (float) numPoints;
+                strokeWeight(2);
+                //stroke(255);
+                float lastX = width / 2, lastY = halfHeight;
+                
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    float c = map(average, 0, 1, 0, 255);
+                    stroke(c, 255, 255);
+                    // float theta = i * thetaInc * lerpedAverage;
+                    float theta = i * thetaInc * (50 + (lerpedAverage * 200)); // making it respond to sound here & my shapes 
+                    //float theta = i * thetaInc + (50 + (lerpedAverage * 700)); //the pain spiral 
+                    float x = width / 2 + sin(theta) * r;
+                    float y = height / 2 - cos(theta) * r;
+        
+                    r += 0.7f * lerpedAverage;
+                    line(lastX, lastY, x, y);
+                    lastX = x;
+                    lastY = y;
                 }
 
                 break;
